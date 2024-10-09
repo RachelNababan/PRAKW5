@@ -180,6 +180,7 @@ let todos = [
     updated_at: "2024-03-17T16:00:00.000000Z",
   },
 ];
+
 function getAllTodo() {
   return todos;
 }
