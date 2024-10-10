@@ -1,7 +1,8 @@
-//todolist
 import React from "react";
 import TabsItem from "./TabsItem";
 import PropTypes from "prop-types";
+
+
 function TodoList({ todos, onDelete, onTodoFinished, keywordSearch }) {
   let todosNotFinished = todos.filter((todo) => !todo.is_finished);
   let todosFinished = todos.filter((todo) => todo.is_finished);
