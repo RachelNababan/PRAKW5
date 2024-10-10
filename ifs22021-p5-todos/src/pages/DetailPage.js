@@ -1,19 +1,14 @@
-import React from "react";
 import { getTodo } from "../utils/data-todos";
 import { useParams } from "react-router-dom";
 import * as Icon from "react-feather";
 import { formatDate } from "../utils/tools";
+
 function DetailPage() {
   const { id } = useParams();
-  console.log(id);
   const todo = getTodo(id);
 
   if (!todo) {
-    return (
-      <div className="container">
-        <p>Todo tidak ditemukan.</p>
-      </div>
-    );
+    return <p>Tidak ada catatan</p>;
   }
 
   const badgeStatus = todo.is_finished ? (
@@ -21,45 +16,32 @@ function DetailPage() {
   ) : (
     <span className="badge bg-warning">Proses</span>
   );
-  let resultRender;
-  if (todo) {
-    resultRender = (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12">
-            <div className="card mt-3">
-              <div className="card-body">
-                <h3>
-                  {todo.title} {badgeStatus}
-                </h3>
-                <hr />
-                <div>
-                  {todo.is_finished ? (
-                    <div>
-                      <Icon.Check /> Selesai pada:
-                      <span className="ms-2 text-success">
-                        {formatDate(todo.updated_at)}
-                      </span>
-                    </div>
-                  ) : null}
-                  <div className="text-middle">
-                    <Icon.Clock /> Dibuat pada:
-                    <span className="ms-2 text-muted">
-                      {formatDate(todo.created_at)}
-                    </span>
-                  </div>
-                </div>
-                <hr />
-                <p>{todo.description}</p>
-              </div>
-            </div>
+
+  return (
+    <div className="container mt-4">
+      <h1 className="text-center mb-4">{todo.title}</h1>
+      <div className="text-center mb-4">
+        {badgeStatus}
+      </div>
+      <div className="card shadow-sm">
+        <div className="card-body">
+          <div className="d-flex align-items-center mb-3">
+            <Icon.Clock className="me-2" />
+            <span>Dibuat pada: {formatDate(todo.created_at)}</span>
           </div>
+          {todo.is_finished && (
+            <div className="d-flex align-items-center mb-3">
+              <Icon.Check className="me-2" />
+              <span>
+                Selesai pada: <span className="text-success">{formatDate(todo.updated_at)}</span>
+              </span>
+            </div>
+          )}
+          <p>{todo.description}</p>
         </div>
       </div>
-    );
-  } else {
-    resultRender = <p>Tidak ada catatan</p>;
-  }
-  return resultRender;
+    </div>
+  );
 }
+
 export default DetailPage;
