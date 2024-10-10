@@ -1,13 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import TodoList from "../components/TodoList";
 import { getAllTodo, getTodo, editTodo, deleteTodo } from "../utils/data-todos";
 import PropTypes from "prop-types";
+
 function HomePageWrapper({ keyword }) {
-  return <HomePage keyword={keyword} />;
+  const navigate = useNavigate();
+
+  return <HomePage keyword={keyword} navigate={navigate} />;
 }
+
 HomePageWrapper.propTypes = {
   keyword: PropTypes.string.isRequired,
 };
+
 class HomePage extends React.Component {
   constructor(props) {
     super(props);
@@ -17,6 +23,7 @@ class HomePage extends React.Component {
     this.onTodoFinished = this.onTodoFinished.bind(this);
     this.onDeleteHandler = this.onDeleteHandler.bind(this);
   }
+
   onDeleteHandler(id) {
     deleteTodo(id);
     this.setState({
@@ -31,6 +38,7 @@ class HomePage extends React.Component {
       timer: 700,
     });
   }
+
   onTodoFinished(id, status) {
     const targetTodo = getTodo(id);
     if (targetTodo) {
@@ -47,13 +55,18 @@ class HomePage extends React.Component {
       Swal.fire({
         position: "top-end",
         icon: "success",
-        // eslint-disable-next-line quotes
         title: `Berhasil mengubah status todo!`,
         showConfirmButton: false,
         timer: 700,
       });
+
+      // Jika status diubah menjadi belum selesai, arahkan ke halaman detail
+      if (status === 0) {
+        this.props.navigate(`/detail/${id}`);
+      }
     }
   }
+
   render() {
     return (
       <div className="container-fluid">
@@ -69,7 +82,11 @@ class HomePage extends React.Component {
     );
   }
 }
+
 HomePage.propTypes = {
   keyword: PropTypes.string.isRequired,
+  navigate: PropTypes.func.isRequired,
 };
+
 export default HomePageWrapper;
+
