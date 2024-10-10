@@ -15,5 +15,4 @@ function AddPage() {
     </div>
   );
 }
-
 export default AddPage;
