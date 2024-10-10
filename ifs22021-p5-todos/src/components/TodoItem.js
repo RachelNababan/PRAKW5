@@ -3,13 +3,14 @@ import * as Icon from "react-feather";
 import { formatDate } from "../utils/tools";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
 function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
   let buttonAction;
   if (!todo.is_finished) {
     buttonAction = (
       <button
         onClick={() => onTodoFinished(todo.id, 1)}
-        className="btn btn-outline-success"
+        className="btn btn-outline-success me-2"
       >
         <Icon.Check />
         <span>Selesai</span>
@@ -19,13 +20,14 @@ function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
     buttonAction = (
       <button
         onClick={() => onTodoFinished(todo.id, 0)}
-        className="btn btn-outline-danger"
+        className="btn btn-outline-danger me-2"
       >
         <Icon.X />
         <span>Belum Selesai</span>
       </button>
     );
   }
+
   return (
     <div className="card mb-3">
       <div className="card-body">
@@ -33,7 +35,7 @@ function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
           <div>
             <h5>
               {!isDetail ? (
-                <Link to={/detail/${todo.id}}>{todo.title}</Link>
+                <Link to={`/detail/${todo.id}`}>{todo.title}</Link>
               ) : (
                 todo.title
               )}
@@ -55,7 +57,14 @@ function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
               </div>
             </div>
           </div>
-          <div>{buttonAction}</div>
+          <div>
+            {buttonAction}
+            {/* Tombol Edit */}
+            <Link to={`/edit/${todo.id}`} className="btn btn-outline-primary">
+              <Icon.Edit />
+              <span>Edit</span>
+            </Link>
+          </div>
         </div>
         <hr />
         <div className="d-flex justify-content-between">
@@ -63,36 +72,32 @@ function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
             <p>{todo.description}</p>
           </div>
           {!isDetail ? (
-            <div className="d-flex">
-              <div className="text-end">
-                <button
-                  onClick={() => {
-                    // eslint-disable-next-line no-undef
-                    Swal.fire({
-                      title: "Hapus Todo",
-                      // eslint-disable-next-line quotes
-                      text: `Apakah kamu yakin ingin mehapus todo:
-${todo.title}?`,
-                      icon: "warning",
-                      showCancelButton: true,
-                      confirmButtonText: "Ya, Tetap Hapus",
-                      customClass: {
-                        confirmButton: "btn btn-danger me-3 mb-4",
-                        cancelButton: "btn btn-secondary mb-4",
-                      },
-                      buttonsStyling: false,
-                    }).then((result) => {
-                      if (result.isConfirmed) {
-                        // eslint-disable-next-line no-undef
-                        onDelete(todo.id);
-                      }
-                    });
-                  }}
-                  className="btn btn-danger"
-                >
-                  <Icon.Trash />
-                </button>
-              </div>
+            <div className="text-end">
+              <button
+                onClick={() => {
+                  // eslint-disable-next-line no-undef
+                  Swal.fire({
+                    title: "Hapus Todo",
+                    text: `Apakah kamu yakin ingin mehapus todo: ${todo.title}?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Ya, Tetap Hapus",
+                    customClass: {
+                      confirmButton: "btn btn-danger me-3 mb-4",
+                      cancelButton: "btn btn-secondary mb-4",
+                    },
+                    buttonsStyling: false,
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // eslint-disable-next-line no-undef
+                      onDelete(todo.id);
+                    }
+                  });
+                }}
+                className="btn btn-danger"
+              >
+                <Icon.Trash />
+              </button>
             </div>
           ) : null}
         </div>
@@ -100,6 +105,7 @@ ${todo.title}?`,
     </div>
   );
 }
+
 TodoItem.propTypes = {
   todo: PropTypes.shape({
     id: PropTypes.number.isRequired,
@@ -114,4 +120,5 @@ TodoItem.propTypes = {
   onTodoFinished: PropTypes.func.isRequired,
   isDetail: PropTypes.bool.isRequired,
 };
+
 export default TodoItem;
