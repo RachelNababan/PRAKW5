@@ -33,7 +33,7 @@ function TodoItem({ todo, onDelete, onTodoFinished, isDetail }) {
           <div>
             <h5>
               {!isDetail ? (
-                <Link to={`/detail/${todo.id}`}>{todo.title}</Link>
+                <Link to={/detail/${todo.id}}>{todo.title}</Link>
               ) : (
                 todo.title
               )}
