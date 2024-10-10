@@ -1,10 +1,21 @@
+import React from "react";
 import { getTodo } from "../utils/data-todos";
 import { useParams } from "react-router-dom";
 import * as Icon from "react-feather";
 import { formatDate } from "../utils/tools";
 function DetailPage() {
-  const params = useParams();
-  const todo = getTodo(params.id);
+  const { id } = useParams();
+  console.log(id);
+  const todo = getTodo(id);
+
+  if (!todo) {
+    return (
+      <div className="container">
+        <p>Todo tidak ditemukan.</p>
+      </div>
+    );
+  }
+
   const badgeStatus = todo.is_finished ? (
     <span className="badge bg-success">Selesai</span>
   ) : (
