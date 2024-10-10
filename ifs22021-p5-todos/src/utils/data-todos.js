@@ -180,38 +180,44 @@ let todos = [
     updated_at: "2024-03-17T16:00:00.000000Z",
   },
 ];
+
 function getAllTodo() {
   return todos;
 }
 function getTodo(id) {
   return todos.find((todo) => todo.id === id);
 }
+
 function addTodo({ title, description }) {
-  todos = [
-    ...todos,
-    {
-      id: +new Date(),
-      title,
-      description,
-      is_finished: 0,
-      cover: null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    },
-  ];
+  const newTodo = {
+    id: +new Date(),
+    title,
+    description,
+    is_finished: 0,
+    cover: null,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+  todos.push(newTodo);
 }
+
 function editTodo({ id, title, description, is_finished }) {
   todos = todos.map((todo) => {
     if (todo.id === id) {
-      todo.title = title;
-      todo.description = description;
-      todo.is_finished = is_finished;
-      todo.updated_at = new Date().toISOString();
+      return {
+        ...todo,
+        title,
+        description,
+        is_finished,
+        updated_at: new Date().toISOString(),
+      };
     }
     return todo;
   });
 }
+
 function deleteTodo(id) {
   todos = todos.filter((todo) => todo.id !== id);
 }
+
 export { getAllTodo, getTodo, addTodo, editTodo, deleteTodo };
