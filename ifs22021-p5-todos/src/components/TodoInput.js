@@ -91,4 +91,5 @@ class TodoInput extends React.Component {
 TodoInput.propTypes = {
   onAddTodo: PropTypes.func.isRequired,
 };
+
 export default TodoInput;
